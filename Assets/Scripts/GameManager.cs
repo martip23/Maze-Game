@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -20,16 +21,17 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	private void Start () 
 	{
+		///*CREATE PAUSE MENU*///
 		pauseMenuInstance = Instantiate (pauseMenuPrefab) as GameObject;
 		pauseMenuInstance.SetActive (false);
+		assignMenuButtons ();
+
 		BeginGame();
 	}
 	
 	// Update is called once per frame
 	private void Update () 
 	{
-		if (Input.GetKeyDown (KeyCode.Space))
-			RestartGame ();
 		if (Input.GetKeyDown (KeyCode.P))
 			PauseGame ();
 	}
@@ -56,10 +58,13 @@ public class GameManager : MonoBehaviour {
 		{
 			Destroy (playerInstance.gameObject);
 		}
+		if (pauseMenuInstance.activeSelf){
+			PauseGame ();
+		}
 		BeginGame();
 	}
 
-	private void PauseGame ()
+	public void PauseGame ()
 	{
 					// If paused, unpause
 		if (pauseMenuInstance.activeSelf) {
@@ -72,5 +77,18 @@ public class GameManager : MonoBehaviour {
 			playerInstance.paused = true;
 		}
 	}
-}
 
+	private void assignMenuButtons ()
+	{
+		Button[] buttons;
+		buttons = pauseMenuInstance.GetComponentsInChildren<Button>();
+		buttons[0].onClick.AddListener (PauseGame);
+		buttons [1].onClick.AddListener (RestartGame);
+		buttons [2].onClick.AddListener (MainMenu);
+	}
+
+	private void MainMenu ()
+	{
+		
+	}
+}
