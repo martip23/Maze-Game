@@ -256,6 +256,9 @@ MonoBehaviour:
   endLocation:
     x: 20
     z: 20
+  pauseMenuPrefab: {fileID: 1617922959109174, guid: e4f1acb50c03a0d42aac13cbc0135bfe,
+    type: 2}
+  mainMenuPrefab: {fileID: 0}
 --- !u!4 &768194915
 Transform:
   m_ObjectHideFlags: 0
