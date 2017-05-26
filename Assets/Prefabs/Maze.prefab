@@ -84,13 +84,14 @@ MonoBehaviour:
   doorProbability: 0.073
   startBeaconPrefab: {fileID: 114648958055889870, guid: 213b1fa645d5e33479c7760f6be0042f,
     type: 2}
-  endBeaconPrefab: {fileID: 0}
+  endBeaconPrefab: {fileID: 114823586233093646, guid: dfaa5bb3d0a6e4d4a821ebf6f7a7b50e,
+    type: 2}
   collectiblesPrefab: {fileID: 0}
-  generateCollectibles: 1
+  generateCollectibles: 0
   startLocation:
     x: 1
     z: 1
   endLocation:
-    x: 20
-    z: 20
+    x: 19
+    z: 19
   numOfCollectibles: 5

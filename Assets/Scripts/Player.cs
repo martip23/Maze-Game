@@ -12,6 +12,11 @@ public class Player : MonoBehaviour {
 		transform.localPosition = cell.transform.localPosition;
 	}
 
+	public MazeCell getLocation ()
+	{
+		return currentCell;
+	}
+
 	private void Move (MazeDirection direction)
 	{
 		MazeCellEdge edge = currentCell.GetEdge (direction);

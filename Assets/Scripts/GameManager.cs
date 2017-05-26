@@ -17,6 +17,15 @@ public class GameManager : MonoBehaviour {
 	private GameObject pauseMenuInstance;
 
 	public GameObject mainMenuPrefab;
+	private GameObject mainMenuInstance;
+
+	public GameObject howToPlayPrefab;
+	private GameObject howToInstance;
+
+	public GameObject victoryScreenPrefab;
+	private GameObject victoryScreenInstance;
+
+
 
 	// Use this for initialization
 	private void Start () 
@@ -24,9 +33,10 @@ public class GameManager : MonoBehaviour {
 		///*CREATE PAUSE MENU*///
 		pauseMenuInstance = Instantiate (pauseMenuPrefab) as GameObject;
 		pauseMenuInstance.SetActive (false);
-		assignMenuButtons ();
+		mainMenuInstance = Instantiate (mainMenuPrefab) as GameObject;
+		assignPauseMenuButtons ();
+		assignMainMenuButtons ();
 
-		BeginGame();
 	}
 	
 	// Update is called once per frame
@@ -34,11 +44,22 @@ public class GameManager : MonoBehaviour {
 	{
 		if (Input.GetKeyDown (KeyCode.P))
 			PauseGame ();
+		if (playerInstance){
+			if (playerInstance.getLocation() == mazeInstance.GetCell
+				(mazeInstance.endLocation))
+			{
+				RestartGame ();
+				victory ();
+			}			
+		}
+
 	}
 
 
 	private void BeginGame () 
 	{
+		mainMenuInstance.SetActive (false);
+
 		Camera.main.clearFlags = CameraClearFlags.Skybox;
 		Camera.main.rect = new Rect (0f, 0f, 1f, 1f);
 
@@ -52,16 +73,22 @@ public class GameManager : MonoBehaviour {
 
 	private void RestartGame () 
 	{
-		StopAllCoroutines ();
-		Destroy (mazeInstance.gameObject);
-		if (playerInstance != null)
-		{
-			Destroy (playerInstance.gameObject);
+		if (mazeInstance){
+			StopAllCoroutines ();
+			destroyChildren (mazeInstance);
+			Destroy (mazeInstance.gameObject);
+			if (playerInstance != null)	{
+				Destroy (playerInstance.gameObject);
+			}
+			if (pauseMenuInstance.activeSelf){
+				PauseGame ();
+			}
+			BeginGame();
+			}
+		else {
+			BeginGame ();
 		}
-		if (pauseMenuInstance.activeSelf){
-			PauseGame ();
-		}
-		BeginGame();
+
 	}
 
 	public void PauseGame ()
@@ -78,17 +105,63 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	private void assignMenuButtons ()
+	private void assignPauseMenuButtons ()
 	{
-		Button[] buttons;
-		buttons = pauseMenuInstance.GetComponentsInChildren<Button>();
-		buttons[0].onClick.AddListener (PauseGame);
-		buttons [1].onClick.AddListener (RestartGame);
-		buttons [2].onClick.AddListener (MainMenu);
+		Button[] pauseButtons;
+		pauseButtons = pauseMenuInstance.GetComponentsInChildren<Button>();
+		pauseButtons[0].onClick.AddListener (PauseGame);
+		pauseButtons [1].onClick.AddListener (RestartGame);
+		pauseButtons [2].onClick.AddListener (MainMenuToggle);
 	}
 
-	private void MainMenu ()
+	private void assignMainMenuButtons ()
 	{
-		
+		Button[] menuButtons;
+		menuButtons = mainMenuInstance.GetComponentsInChildren<Button>();
+		menuButtons[0].onClick.AddListener (RestartGame);
+		menuButtons [1].onClick.AddListener (HowToPlay);
+	}
+
+	private void MainMenuToggle ()
+	{
+		if (mainMenuInstance.activeSelf){
+			mainMenuInstance.SetActive (false);
+		} else {
+			mainMenuInstance.SetActive (true);
+		}
+	}
+
+	private void destroyChildren(Maze parent)
+	{
+		foreach(Transform child in transform)
+		{
+			Destroy (child.gameObject);
+		}
+	}
+
+	private void HowToPlay()
+	{
+		Button exitButton;
+		howToInstance = Instantiate (howToPlayPrefab) as GameObject;
+		exitButton = howToInstance.GetComponentInChildren<Button> ();
+		exitButton.onClick.AddListener (exitHowToPlay);
+	}
+
+	private void exitHowToPlay()
+	{
+		Destroy (howToInstance);
+	}
+
+	private void victory()
+	{
+		Button exitButton;
+		victoryScreenInstance = Instantiate (victoryScreenPrefab) as GameObject;
+		exitButton = victoryScreenInstance.GetComponentInChildren<Button> ();
+		exitButton.onClick.AddListener (exitVictoryScreen);
+	}
+
+	private void exitVictoryScreen()
+	{
+		Destroy (victoryScreenInstance);
 	}
 }

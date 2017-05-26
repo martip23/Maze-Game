@@ -181,5 +181,7 @@ public class Maze : MonoBehaviour {
 		}
 		Thing startBeacon = Instantiate (startBeaconPrefab) as Thing;
 		startBeacon.setLocation (GetCell(startLocation));
+		Thing endBeacon = Instantiate (endBeaconPrefab) as Thing;
+		endBeacon.setLocation (GetCell (endLocation));
 	}
 }
